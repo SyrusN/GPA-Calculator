@@ -12,7 +12,7 @@
 #include "GPATotal.h"
 /**
  * Function         : void sentinalFunction(GPATotal& total);
- * Parameters       : total which is the singleton object
+ * Parameters       : total which is the object used throughout the program
  * Purpose          : To act as the main function behind the driver method (main())
  * Pre-Condition    : Program has started and this function is called in main()
  * Post-Condition   : Program has ended
