@@ -2,7 +2,7 @@
  * Program       : A GPA calculator
  * File Name     : GPATotal.cpp
  * Author        : Syrus Nelson
- * Last revision : 6 April 2022
+ * Last revision : 7 April 2022
  * Purpose       : To have a GPA calculator that saves your input for later calculations
  * User Input    : Integers for option selection.
  *               : Strings for various operations.
@@ -26,7 +26,7 @@ void GPATotal::addCourseGPAs()
    while (2 == 2) {
       
    gpa:
-      cout << "Enter the course GPA: ";
+      cout << '\n' << "Enter the course GPA: ";
       cin >> temp;
       tempGPA = std::stod(temp);
       temp = "";
@@ -68,8 +68,8 @@ void GPATotal::addCourseGPAs()
       } else {
          addCourse(Course(tempGPA, tempCredits, "X"));
       }
-      
-      cout << "Continue? (1 for yes, any other character for no)" << endl;
+      cout << "Course added." << endl;
+      cout << "Continue? (1 for yes, any other character for no)" << '\n' << endl;
       tempDescription = "";
       cin >> tempDescription;
       if (tempDescription != "1") {
@@ -99,7 +99,7 @@ void GPATotal::displayGPAs() const
 {
    
    if (courses_.size() == 0) {
-      cout << "Add GPAs to show a transcript" << endl;
+      cout << "Add GPAs to show a transcript" << '\n' << endl;
    } else {
       
       //Loop through to output each course
@@ -111,7 +111,7 @@ void GPATotal::displayGPAs() const
             << courses_.at(i).getGPA() + 0.0 << endl;
       }
 
-      cout << "Cumulative GPA: " << getGPATotal() <<"\n" << "\n";
+      cout << "Cumulative GPA: " << getGPATotal() << "\n" << "\n";
    }
 
 }
@@ -119,9 +119,10 @@ void GPATotal::deleteCourse(const int courseNumber)
 {
    
    if (courseNumber > courses_.size() || courseNumber < 1) {
-      cout << "Try inputting a valid course number to delete." << endl;
+      cout << "Try inputting a valid course number to delete." << '\n' << endl;
    } else {
       courses_.erase(courses_.begin() + courseNumber - 1);
+      cout << "Course deleted." << '\n' << endl;
    }
 
 }
@@ -129,7 +130,7 @@ void GPATotal::editCourse(const int courseNumber)
 {
    
    if (courseNumber > courses_.size() || courseNumber < 1) {
-      cout << "Try inputting a valid course number to edit." << endl;
+      cout << "Try inputting a valid course number to edit." << '\n' << endl;
    } else {
       
       //This loop is to keep the session going for the user to revise a given course
@@ -167,6 +168,7 @@ void GPATotal::editCourse(const int courseNumber)
                }
             }
             courses_.at(courseNumber - 1).setDescription(userInput);
+            cout << "Updated course name." << '\n' << endl;
             userInput = "";
             break;
 
@@ -186,7 +188,7 @@ void GPATotal::editCourse(const int courseNumber)
             }
             courses_.at(courseNumber - 1).setCredits(selection);
             userInput = "";
-            calculateNewGPA();
+            cout << "Updated course credits." << '\n' << endl;
             break;
 
          case 3:
@@ -204,7 +206,9 @@ void GPATotal::editCourse(const int courseNumber)
                goto gpaEdit;
             }
             courses_.at(courseNumber - 1).setGPA(gpaRevision);
+            calculateNewGPA();
             userInput = "";
+            cout << "Updated course GPA." << '\n' << endl;
             break;
 
          case 4:
@@ -238,6 +242,7 @@ void GPATotal::writeToFile() const
       }
 
       newFile.close();
+      cout << "File generated." << '\n' << endl;
    }
 
 }
@@ -289,17 +294,18 @@ void GPATotal::importFile()
             courses_.push_back(Course(tempDouble, tempInt, tempDescription));
             temp = "";
          }
-
+      
+      calculateNewGPA();
+      cout << "File successfully imported." << '\n' << endl;
       } else {
          throw 'f';
       }
-      calculateNewGPA();
 
    } catch (int importError) {
-      std::cerr << "Format does not match." << endl;
+      std::cerr << "Format does not match." << '\n' << endl;
       courses_.clear();
    } catch (char fileNotFound) {
-      std::cerr << "File not found." << endl;
+      std::cerr << "File not found." << '\n' << endl;
    }
 }
 void GPATotal::sentinalFunction()
@@ -330,10 +336,24 @@ void GPATotal::sentinalFunction()
          break;
       }
       case 2:
-         cout << "GPA: " << getGPATotal() << endl;
+
+         if (courses_.empty())
+         {
+            cout << "Try adding some courses to generate a total GPA." << '\n' << endl;
+            break;
+         }
+
+         cout << "GPA: " << getGPATotal() << '\n' << endl;
          break;
       case 3:
       deletion:
+
+         if (courses_.empty())
+         {
+            cout << "Try adding some courses before deleting any." << '\n' << endl;
+            break;
+         }
+
          displayGPAs();
          cout << "Choose a course to delete by its number" << endl;
          cin >> optionHandler;
@@ -348,6 +368,13 @@ void GPATotal::sentinalFunction()
          break;
       case 4:
       revision:
+
+         if (courses_.empty())
+         {
+            cout << "Try adding some courses before editing any." << '\n' << endl;
+            break;
+         }
+
          displayGPAs();
          cout << "Choose a course to edit by its number" << endl;
          cin >> optionHandler;
@@ -362,23 +389,34 @@ void GPATotal::sentinalFunction()
          break;
       case 5:
       importFile:
-         cout << "Confirm any overwrite? (Y/N)" << endl;
-         cin >> optionHandler;
-         optionChar = optionHandler.at(0);
+         if (!courses_.empty()) {
+            cout << "Overwrite current data? (Y/N)" << endl;
+            cin >> optionHandler;
+            optionChar = optionHandler.at(0);
 
-         if (optionChar == 'Y' || optionChar == 'y') {
-            importFile();
-         } else if (optionChar == 'N' || optionChar == 'n') {
-            cout << "Cancelling import..." << endl;
+            if (optionChar == 'Y' || optionChar == 'y') {
+               importFile();
+            } else if (optionChar == 'N' || optionChar == 'n') {
+               cout << "Cancelling import." << endl;
+            } else {
+               goto importFile;
+            }
          } else {
-            goto importFile;
+            importFile();
          }
-
+         
          break;
       case 6:
          writeToFile();
          break;
       case 7:
+
+         if (courses_.empty())
+         {
+            cout << "Try adding some courses to see their related information." << '\n' << endl;
+            break;
+         }
+      
          displayGPAs();
          break;
       case 8:
