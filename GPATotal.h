@@ -13,11 +13,11 @@
 #include "Course.h"
 class GPATotal
 {
-    //Member variables
+   // Member variables
    double gpaTotal_;
    vector<Course> courses_;
 
-    //Private Functions
+   // Private Functions
    /**
     * Function         : void calculateNewGPA();
     * Parameters       : None
@@ -40,7 +40,7 @@ class GPATotal
     */
    void addCourse(const Course course);
 
-    //Public Functions
+   // Public Functions
    /**
     * Function         : void addCourseGPAs();
     * Parameters       : None
@@ -81,7 +81,7 @@ class GPATotal
     * Pre-Condition    : A GPACalculatorData.txt file must be present with the exact formatting
     * Post-Condition   : The contents of the file are imported into the system
     * Return Value     : void
-    * Functions Called : clear(), is_open(), getline(), size(), at(), stoi(), stod(), 
+    * Functions Called : clear(), is_open(), getline(), size(), at(), stoi(), stod(),
     *                  :  isalnum(), push_back(), calculateNewGPA()
     */
    void importFile();
@@ -99,6 +99,32 @@ class GPATotal
    void writeToFile() const;
 
    /**
+    * Function         : int checkInput(string *input, const int maxInputSize, const string errorMessage);
+    * Parameters       : input which is to be checked, maxInputSize which is the max chars/digits, errorMessage
+    *                  :  which is the corresponding error message.
+    * Purpose          : To check for any invalid input that would cause the program to crash
+    * Pre-Condition    : The user has input some value
+    * Post-Condition   : The input is validated, otherwise the corresponding error message is displayed
+    *                  :  and the program asks the user to re-enter a valid value
+    * Return Value     : void
+    * Functions Called : size(), isalpha()
+    */
+   int checkInput(string *input, const int maxInputSize, const string errorMessage);
+
+   /**
+    * Function         : int checkValue(string *input, const double minValue, const double maxValue, const string errorMessage);
+    * Parameters       : input which is to be checked, minValue which is the minimum input value, maxValue which is the maximum
+    *                  :  input value, errorMessage which is the corresponding error message
+    * Purpose          : To check for any invalid input beyond the bounds of the intended use
+    * Pre-Condition    : The user has input some value
+    * Post-Condition   : The input is validated, otherwise the corresponding error message is displayed
+    *                  :  and the program asks the user to re-enter a valid value
+    * Return Value     : void
+    * Functions Called : stod()
+    */
+   int checkValue(string *input, const double minValue, const double maxValue, const string errorMessage);
+
+   /**
     * Function         : void displayGPAs() const;
     * Parameters       : None
     * Purpose          : Display the current transcript to the user
@@ -113,7 +139,7 @@ class GPATotal
     * Function         : void editCourse(const int courseNumber);
     * Parameters       : courseNumber which is the user selected course to edit
     * Purpose          : To edit a user selected course from the transcript
-    * Pre-Condition    : At least one course entry exists and user 
+    * Pre-Condition    : At least one course entry exists and user
     *                  :  selected option 4 in the sentinalFunction
     * Post-Condition   : The course is revised to the user's input.
     *                  : The GPA is recalculated upon revision.
@@ -122,7 +148,7 @@ class GPATotal
     *                  :  setDescription(), setGPA(), setCredits(), calculateNewGPA()
     */
    void editCourse(const int courseNumber);
-   
+
 public:
    /**
     * Function         : void sentinalFunction(GPATotal& total);
@@ -136,6 +162,4 @@ public:
     *                  :  exit()
     */
    void sentinalFunction();
-
 };
-
