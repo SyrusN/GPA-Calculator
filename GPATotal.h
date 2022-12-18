@@ -2,7 +2,7 @@
  * Program       : A GPA calculator
  * File Name     : GPATotal.h
  * Author        : Syrus Nelson
- * Last revision : 6 April 2022
+ * Last revision : 17 December 2022
  * Purpose       : To have a GPA calculator that saves your input for later calculations
  * User Input    : Integers for option selection.
  *               : Strings for various operations.
