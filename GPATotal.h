@@ -9,7 +9,6 @@
  * Output        : A file that is formatted to be read from this program.
  *               : The current transcript of the user.
  */
-#pragma once
 #include "Course.h"
 class GPATotal
 {

@@ -2,7 +2,7 @@
  * Program       : A GPA calculator
  * File Name     : GPATotal.cpp
  * Author        : Syrus Nelson
- * Last revision : 17 December 2022
+ * Last revision : 27 December 2022
  * Purpose       : To have a GPA calculator that saves your input for later calculations
  * User Input    : Integers for option selection.
  *               : Strings for various operations.
@@ -19,7 +19,8 @@ int GPATotal::checkInput(string *input, const int maxInputSize, const string err
 {
    if ((*input).size() > maxInputSize)
    {
-      cout << errorMessage << endl;
+      cout << errorMessage << '\n'
+           << endl;
       *input = "";
       return -1;
    }
@@ -367,7 +368,36 @@ void GPATotal::writeToFile() const
    else
    {
       std::ofstream newFile;
-      newFile.open("GPACalculatorData.txt");
+      std::ifstream existFile("AppData/GPACalculatorData.txt");
+      if (existFile.is_open())
+      {
+         char optionChar;
+         string optionHandler;
+         while (2 == 2)
+         {
+            cout << "File already exists. Overwrite existing file? (Y/N)" << endl;
+            cin >> optionHandler;
+            optionChar = optionHandler.at(0);
+
+            if (optionChar == 'Y' || optionChar == 'y')
+            {
+               // Overwrite the existing file.
+               break;
+            }
+            else if (optionChar == 'N' || optionChar == 'n')
+            {
+               cout << "Cancelling export." << '\n'
+                    << endl;
+               return;
+            }
+            else
+            {
+               // Iterate once more for user to enter a proper input.
+               continue;
+            }
+         }
+      }
+      newFile.open("AppData/GPACalculatorData.txt");
 
       /* Using ! to delimit an end for the course name
        * Using # to delimit an end for the credits
@@ -397,7 +427,7 @@ void GPATotal::importFile()
 
    try
    {
-      std::ifstream fileRead("GPACalculatorData.txt");
+      std::ifstream fileRead("AppData/GPACalculatorData.txt");
       if (fileRead.is_open())
       {
 
@@ -482,9 +512,15 @@ void GPATotal::sentinalFunction()
       cout << "5 - Import GPAs" << endl;
       cout << "6 - Export GPAs" << endl;
       cout << "7 - Output unofficial transcript" << endl;
-      cout << "8 - Exit" << endl;
+      cout << "8 - Creator acknowledgement" << endl;
+      cout << "9 - Exit" << endl;
 
       cin >> optionHandler;
+
+      if (checkInput(&optionHandler, 9, "Value is not within 1-9 integer range, please re-enter.") == -1)
+      {
+         continue;
+      }
       optionNum = std::stoi(optionHandler);
 
       switch (optionNum)
@@ -602,6 +638,10 @@ void GPATotal::sentinalFunction()
          displayGPAs();
          break;
       case 8:
+         cout << "Credit for creating and maintaining this software goes to Syrus Nelson" << '\n'
+              << endl;
+         break;
+      case 9:
          exit(0);
          break;
       default:

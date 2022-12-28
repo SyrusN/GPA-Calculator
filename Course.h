@@ -15,19 +15,20 @@
 #include <iostream>
 #include <fstream>
 #include <cctype>
-using std::string;
-using std::cout;
 using std::cin;
-using std::vector;
+using std::cout;
 using std::endl;
+using std::string;
+using std::vector;
 class Course
 {
-   //Member variables
+   // Member variables
    double gpa_;
    int credits_;
    string description_;
+
 public:
-    //Constructors
+   // Constructors
    /**
     * Constructor      : Course(double gpa, int credits) : gpa_(gpa), credits_(credits) {}
     * Purpose          : To create and initialize a Course object with gpa and credits
@@ -39,7 +40,7 @@ public:
    Course(double gpa, int credits) : gpa_(gpa), credits_(credits) {}
 
    /**
-    * Constructor      : Course(double gpa, int credits, string description) : gpa_(gpa), 
+    * Constructor      : Course(double gpa, int credits, string description) : gpa_(gpa),
     *                  :  credits_(credits), description_(description) {}
     * Purpose          : To create and initialize a Course object with a course name, gpa, and credits
     * Pre-Condition    : This Constructor has been called
@@ -115,4 +116,3 @@ public:
     */
    void setDescription(const string descriptionInput);
 };
-
