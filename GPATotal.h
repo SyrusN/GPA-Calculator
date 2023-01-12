@@ -2,7 +2,7 @@
  * Program       : A GPA calculator
  * File Name     : GPATotal.h
  * Author        : Syrus Nelson
- * Last revision : 17 December 2022
+ * Last revision : 12 January 2023
  * Purpose       : To have a GPA calculator that saves your input for later calculations
  * User Input    : Integers for option selection.
  *               : Strings for various operations.
@@ -10,17 +10,31 @@
  *               : The current transcript of the user.
  */
 #include "Course.h"
+#include "CheckErr.h"
 class GPATotal
 {
-   // Member variables
+   // Private Member variables
    double gpaTotal_;
    vector<Course> courses_;
 
-   // Private Functions
+public:
+   // Public Functions
+
+   /**
+    * Function         : vector<Course> getCourses() const;
+    * Parameters       : None
+    * Purpose          : To function as a way to get the courses outside of this class
+    * Pre-Condition    : This function is called
+    * Post-Condition   : A vector of courses is returned
+    * Return Value     : vector<Course>
+    * Functions Called :
+    */
+   vector<Course> getCourses() const;
+
    /**
     * Function         : void calculateNewGPA();
     * Parameters       : None
-    * Purpose          : To hide away the new GPA calculation functionality
+    * Purpose          : To hide away the GPA calculation functionality
     * Pre-Condition    : at least one course has been enterered and this function is called
     * Post-Condition   : The new GPA will have been calculated
     * Return Value     : void
@@ -98,32 +112,6 @@ class GPATotal
    void writeToFile() const;
 
    /**
-    * Function         : int checkInput(string *input, const int maxInputSize, const string errorMessage);
-    * Parameters       : input which is to be checked, maxInputSize which is the max chars/digits, errorMessage
-    *                  :  which is the corresponding error message.
-    * Purpose          : To check for any invalid input that would cause the program to crash
-    * Pre-Condition    : The user has input some value
-    * Post-Condition   : The input is validated, otherwise the corresponding error message is displayed
-    *                  :  and the program asks the user to re-enter a valid value
-    * Return Value     : void
-    * Functions Called : size(), isalpha()
-    */
-   int checkInput(string *input, const int maxInputSize, const string errorMessage);
-
-   /**
-    * Function         : int checkValue(string *input, const double minValue, const double maxValue, const string errorMessage);
-    * Parameters       : input which is to be checked, minValue which is the minimum input value, maxValue which is the maximum
-    *                  :  input value, errorMessage which is the corresponding error message
-    * Purpose          : To check for any invalid input beyond the bounds of the intended use
-    * Pre-Condition    : The user has input some value
-    * Post-Condition   : The input is validated, otherwise the corresponding error message is displayed
-    *                  :  and the program asks the user to re-enter a valid value
-    * Return Value     : void
-    * Functions Called : stod()
-    */
-   int checkValue(string *input, const double minValue, const double maxValue, const string errorMessage);
-
-   /**
     * Function         : void displayGPAs() const;
     * Parameters       : None
     * Purpose          : Display the current transcript to the user
@@ -147,18 +135,4 @@ class GPATotal
     *                  :  setDescription(), setGPA(), setCredits(), calculateNewGPA()
     */
    void editCourse(const int courseNumber);
-
-public:
-   /**
-    * Function         : void sentinalFunction(GPATotal& total);
-    * Parameters       : total which is the singleton object
-    * Purpose          : To act as the main function behind the driver method (main())
-    * Pre-Condition    : Program has started and this function is called in main()
-    * Post-Condition   : Program has ended
-    * Return Value     : void
-    * Functions Called : stoi(), addCourseGPAs(), getGPATotal(), displayGPAs(), isdigit(), at(),
-    *                  :  deleteCourse(), editCourse(), importFile(), writeToFile(), displayGPAs(),
-    *                  :  exit()
-    */
-   void sentinalFunction();
 };
