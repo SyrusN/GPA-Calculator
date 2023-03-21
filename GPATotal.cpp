@@ -182,6 +182,7 @@ void GPATotal::deleteCourse(const int courseNumber)
       cout << "Course deleted." << '\n'
            << endl;
    }
+   calculateNewGPA();
 }
 void GPATotal::editCourse(const int courseNumber)
 {
