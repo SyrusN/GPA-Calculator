@@ -155,7 +155,7 @@ void CommandCalc::sentinalFunction()
          gpaFunc.displayGPAs();
          break;
       case 8:
-         cout << "Credit for creating and maintaining this software goes to Syrus Nelson" << '\n'
+         cout << "Credit for creating and maintaining this program goes to Syrus Nelson" << '\n'
               << endl;
          break;
       case 9:
