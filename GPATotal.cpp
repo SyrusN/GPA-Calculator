@@ -2,7 +2,7 @@
  * Program       : A GPA calculator
  * File Name     : GPATotal.cpp
  * Author        : Syrus Nelson
- * Last revision : 12 January 2023
+ * Last revision : 23 April 2023
  * Purpose       : To have a GPA calculator that saves your input for later calculations
  * User Input    : Integers for option selection.
  *               : Strings for various operations.
@@ -127,17 +127,19 @@ void GPATotal::addCourseGPAs()
 }
 void GPATotal::calculateNewGPA()
 {
-   double tempGPA = 0.0;
+   int totalCredits = 0;
+   double gradePts = 0.0;
 
-   // Add up all of the GPAs in courses_
+   // Add up all of the GPAs multiplied by credits in courses_ and add up the total credits
    for (int course = 0; course < courses_.size(); course++)
    {
-      tempGPA += courses_.at(course).getGPA();
+      gradePts += (courses_.at(course).getGPA() * courses_.at(course).getCredits());
+      totalCredits += courses_.at(course).getCredits();
    }
 
-   // Average out the total sum of the GPAs by number of courses
-   tempGPA /= courses_.size();
-   gpaTotal_ = tempGPA;
+   // Average out the total sum of the gradePts (grade points) by number of credits
+   gradePts /= totalCredits;
+   gpaTotal_ = gradePts;
 }
 double GPATotal::getGPATotal() const
 {
