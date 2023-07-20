@@ -2,7 +2,7 @@
  * Program       : A GPA calculator
  * File Name     : GPATotal.cpp
  * Author        : Syrus Nelson
- * Last revision : 23 April 2023
+ * Last revision : 20 July 2023
  * Purpose       : To have a GPA calculator that saves your input for later calculations
  * User Input    : Integers for option selection.
  *               : Strings for various operations.
@@ -31,79 +31,11 @@ void GPATotal::addCourseGPAs()
    while (2 == 2)
    {
 
-      // GPA loop
-      while (3 == 3)
-      {
-         cout << '\n'
-              << "Enter the course GPA: ";
-         cin >> temp;
+      enterGPA(temp, check, tempGPA);
 
-         string errorMessage = "Try Entering a value from 0.0 - 4.0";
+      enterCredits(temp, check, tempCredits);
 
-         int successfulInput = check.checkInput(&temp, 3, errorMessage);
-         if (successfulInput == -1)
-         {
-            continue;
-         }
-
-         successfulInput = check.checkValue(&temp, 0.0, 4.0, errorMessage);
-         if (successfulInput == -1)
-         {
-            continue;
-         }
-
-         tempGPA = std::stod(temp);
-         temp = "";
-         break;
-      }
-
-      // Credits loop
-      while (3 == 3)
-      {
-         cout << "Enter the course credits: ";
-         cin >> temp;
-         string errorMessage = "Try Entering a value from 1 - 10";
-
-         int successfulInput = check.checkInput(&temp, 3, errorMessage);
-         if (successfulInput == -1)
-         {
-            continue;
-         }
-
-         successfulInput = check.checkValue(&temp, 1, 10, errorMessage);
-         if (successfulInput == -1)
-         {
-            continue;
-         }
-
-         tempCredits = std::stoi(temp);
-         temp = "";
-         break;
-      }
-
-      while (3 == 3)
-      {
-         cout << "Enter the course name with only letters and/or numbers: ";
-         cin >> tempDescription;
-         bool invalid = false;
-
-         // Check each character in the course name for valid characters
-         for (int character = 0; character < tempDescription.size(); character++)
-         {
-            if (!(isalnum(tempDescription.at(character))))
-            {
-               cout << "Please enter a valid course name." << endl;
-               tempDescription = "";
-               invalid = true;
-            }
-         }
-
-         if (invalid)
-         {
-            continue;
-         }
-         break;
-      }
+      enterName(tempDescription);
 
       // If the course description happens to be empty, use a placeholder of X
       if (!tempDescription.empty())
@@ -188,7 +120,6 @@ void GPATotal::deleteCourse(const int courseNumber)
 }
 void GPATotal::editCourse(const int courseNumber)
 {
-
    if (courseNumber > courses_.size() || courseNumber < 1)
    {
       cout << "Try inputting a valid course number to edit." << '\n'
@@ -203,17 +134,10 @@ void GPATotal::editCourse(const int courseNumber)
          string userInput;
          int selection;
          double gpaRevision;
-         cout << "Which field would you like to edit?" << endl;
-         cout << "1. Course Name"
-              << "\n2. Number of credits"
-              << "\n3. Course GPA"
-              << "\n4. Exit" << endl;
-         cin >> userInput;
-
-         // Check input in case the user didn't input a valid int
-         if (!std::isdigit(userInput.at(0)))
+         CheckErr check;
+         int valid = userEditSelection(userInput, check);
+         if (valid == -1)
          {
-            cout << "Please enter an integer." << endl;
             continue;
          }
 
@@ -222,106 +146,33 @@ void GPATotal::editCourse(const int courseNumber)
          // Use selection control to decide what option user wants based on their input
          switch (selection)
          {
-
          case 1:
-            while (2 == 2)
-            {
-               cout << "Enter the new course name with only letters and/or numbers: ";
-               cin >> userInput;
-               bool invalid = false;
-
-               // Check for each character if there is an invalid character in the input course name
-               for (int character = 0; character < userInput.size(); character++)
-               {
-                  if (!(isalnum(userInput.at(character))))
-                  {
-                     cout << "Please enter a valid new course name." << endl;
-                     userInput = "";
-                     invalid = true;
-                  }
-               }
-
-               if (invalid)
-               {
-                  continue;
-               }
-               courses_.at(courseNumber - 1).setDescription(userInput);
-               cout << "Updated course name." << '\n'
-                    << endl;
-               userInput = "";
-               break;
-            }
+            // Revise course name
+            enterName(userInput);
+            courses_.at(courseNumber - 1).setDescription(userInput);
+            cout << "Updated course name." << '\n'
+                 << endl;
+            userInput = "";
             break;
 
          case 2:
-            while (2 == 2)
-            {
-               cout << "Enter the revised number of credits as an integer value from 1 - 10: ";
-               cin >> userInput;
-               bool invalid = false;
-
-               if (!isdigit(userInput.at(0)))
-               {
-                  cout << "Please enter an integer value, no non-integer characters." << endl;
-                  invalid = true;
-               }
-
-               if (invalid)
-               {
-                  continue;
-               }
-               selection = stoi(userInput);
-
-               if (selection > 10 || selection < 1)
-               {
-                  invalid = true;
-               }
-
-               if (invalid)
-               {
-                  continue;
-               }
-               courses_.at(courseNumber - 1).setCredits(selection);
-               userInput = "";
-               cout << "Updated course credits." << '\n'
-                    << endl;
-               break;
-            }
+            // Revise the number of credits
+            int tempCredits;
+            enterCredits(userInput, check, tempCredits);
+            courses_.at(courseNumber - 1).setCredits(tempCredits);
+            userInput = "";
+            cout << "Updated course credits." << '\n'
+                 << endl;
             break;
          case 3:
-            while (2 == 2)
-            {
-               cout << "Enter the revised GPA as an decimal value from 0.0 - 4.0: ";
-               cin >> userInput;
-               bool invalid = false;
-
-               if (!isdigit(userInput.at(0)))
-               {
-                  cout << "Please enter an integer value, no non-digit characters." << endl;
-                  invalid = true;
-               }
-               if (invalid)
-               {
-                  continue;
-               }
-
-               gpaRevision = stod(userInput);
-               if (gpaRevision > 4.0 || gpaRevision < 0.0)
-               {
-                  invalid = true;
-               }
-
-               if (invalid)
-               {
-                  continue;
-               }
-               courses_.at(courseNumber - 1).setGPA(gpaRevision);
-               calculateNewGPA();
-               userInput = "";
-               cout << "Updated course GPA." << '\n'
-                    << endl;
-               break;
-            }
+            // Revise the GPA
+            double tempGPA;
+            enterGPA(userInput, check, tempGPA);
+            courses_.at(courseNumber - 1).setGPA(tempGPA);
+            calculateNewGPA();
+            userInput = "";
+            cout << "Updated course GPA." << '\n'
+                 << endl;
             break;
          case 4:
             return;
@@ -469,4 +320,106 @@ void GPATotal::importFile()
       std::cerr << "File not found." << '\n'
                 << endl;
    }
+}
+void GPATotal::enterGPA(string &temp, CheckErr &check, double &tempGPA)
+{
+   // GPA loop
+   while (3 == 3)
+   {
+      cout << '\n'
+           << "Enter the course GPA: ";
+      cin >> temp;
+
+      string errorMessage = "Try Entering a value from 0.0 - 4.0";
+
+      // Check to see if the format of the number is X.XX where the length of that is 4
+      int successfulInput = check.checkInput(&temp, 4, errorMessage);
+      if (successfulInput == -1)
+      {
+         continue;
+      }
+
+      successfulInput = check.checkValue(&temp, 0.0, 4.0, errorMessage);
+      if (successfulInput == -1)
+      {
+         continue;
+      }
+
+      tempGPA = std::stod(temp);
+      temp = "";
+      break;
+   }
+}
+void GPATotal::enterCredits(string &temp, CheckErr &check, int &tempCredits)
+{
+   while (3 == 3)
+   {
+      cout << "Enter the course credits: ";
+      cin >> temp;
+      string errorMessage = "Try Entering a value from 1 - 10";
+
+      int successfulInput = check.checkInput(&temp, 3, errorMessage);
+      if (successfulInput == -1)
+      {
+         continue;
+      }
+
+      successfulInput = check.checkValue(&temp, 1, 10, errorMessage);
+      if (successfulInput == -1)
+      {
+         continue;
+      }
+
+      tempCredits = std::stoi(temp);
+      temp = "";
+      break;
+   }
+}
+void GPATotal::enterName(string &tempDescription)
+{
+   while (3 == 3)
+   {
+      cout << "Enter the course name with only letters and/or numbers: ";
+      cin >> tempDescription;
+      bool invalid = false;
+
+      // Check each character in the course name for valid characters
+      for (int character = 0; character < tempDescription.size(); character++)
+      {
+         if (!(isalnum(tempDescription.at(character))))
+         {
+            cout << "Please enter a valid course name." << endl;
+            tempDescription = "";
+            invalid = true;
+         }
+      }
+
+      if (invalid)
+      {
+         continue;
+      }
+      break;
+   }
+}
+int GPATotal::userEditSelection(string &userInput, CheckErr &check)
+{
+   cout << "Which field would you like to edit?" << endl;
+   cout << "1. Course Name"
+        << "\n2. Number of credits"
+        << "\n3. Course GPA"
+        << "\n4. Exit" << endl;
+   cin >> userInput;
+
+   // Check input in case the user didn't input a valid int
+   if (!std::isdigit(userInput.at(0)))
+   {
+      cout << "Please enter an integer." << endl;
+      return -1;
+   }
+   if (check.checkValue(&userInput, 1, 4, "Value is not within 1-4 integer range, please re-enter.") == -1)
+   {
+      return -1;
+   }
+
+   return 1;
 }

@@ -2,7 +2,7 @@
  * Program       : A GPA calculator
  * File Name     : GPATotal.h
  * Author        : Syrus Nelson
- * Last revision : 12 January 2023
+ * Last revision : 20 July 2023
  * Purpose       : To have a GPA calculator that saves your input for later calculations
  * User Input    : Integers for option selection.
  *               : Strings for various operations.
@@ -61,7 +61,8 @@ public:
     * Pre-Condition    : Program has started and user selected option 1 in the sentinalFunction
     * Post-Condition   : New courses are added to the transcript
     * Return Value     : void
-    * Functions Called : stod(), stoi(), isalnum(), empty(), addCourse()
+    * Functions Called : enterGPA(), enterCredits(), enterName(), empty(),
+    *                  :  addCourse()
     */
    void addCourseGPAs();
 
@@ -131,8 +132,54 @@ public:
     * Post-Condition   : The course is revised to the user's input.
     *                  : The GPA is recalculated upon revision.
     * Return Value     : void
-    * Functions Called : size(), isdigit(), at(), stoi(), isalnum(), stod(),
-    *                  :  setDescription(), setGPA(), setCredits(), calculateNewGPA()
+    * Functions Called : size(), stoi(), at(), enterCredits(), setCredits(), userEditSelection(),
+    *                  :  setDescription(), enterGPA(), setGPA(), calculateNewGPA()
     */
    void editCourse(const int courseNumber);
+
+private:
+   /**
+    * Function         : void enterGPA(string &temp, CheckErr &check, double &tempGPA);
+    * Parameters       : temporary string to use for entering the GPA, an error checker, and the new GPA
+    * Purpose          : To revise the GPA for a given Course
+    * Pre-Condition    : The course already exists
+    * Post-Condition   : The new GPA is entered and stored in tempGPA
+    * Return Value     : void
+    * Functions Called : checkInput(), checkValue(), stod()
+    */
+   void enterGPA(string &temp, CheckErr &check, double &tempGPA);
+
+   /**
+    * Function         : void enterCredits(string &temp, CheckErr &check, int &tempCredits);
+    * Parameters       : temporary string to use for entering the credit amount, an error checker, and the new credit value
+    * Purpose          : To revise the credit value for a given Course
+    * Pre-Condition    : The course already exists
+    * Post-Condition   : The new credit value is entered and stored in tempCredits
+    * Return Value     : void
+    * Functions Called : checkInput(), checkValue(), stoi()
+    */
+   void enterCredits(string &temp, CheckErr &check, int &tempCredits);
+
+   /**
+    * Function         : void enterName(string &tempDescription);
+    * Parameters       : temporary string to use for the new name of the course
+    * Purpose          : To revise the description of a given course
+    * Pre-Condition    : The course already exists
+    * Post-Condition   : The new description is entered and stored in tempDescription
+    * Return Value     : void
+    * Functions Called : isalnum(), at(), size()
+    */
+   void enterName(string &tempDescription);
+
+   /**
+    * Function         : int userEditSelection(string &userInput, CheckErr& check);
+    * Parameters       : temporary string to use for the userInput
+    *                  :  check to make sure the selection is valid
+    * Purpose          : To select an edit option
+    * Pre-Condition    : The course already exists
+    * Post-Condition   : The user has selected the field to edit
+    * Return Value     : int
+    * Functions Called : isdigit(), at()
+    */
+   int userEditSelection(string &userInput, CheckErr &check);
 };
